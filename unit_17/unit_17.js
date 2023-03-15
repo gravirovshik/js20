@@ -35,7 +35,10 @@ document.querySelector('.b-1').onclick = () => {
 let a2 = [2, 3, 4, 5, 10, 11, 12];
 
 function t2() {
-
+    a2_res = a2.map(elem => {
+        return elem ** 2;
+    });
+    return a2_res;
 }
 
 document.querySelector('.b-2').onclick = () => {
@@ -50,7 +53,10 @@ document.querySelector('.b-2').onclick = () => {
 let a3 = [4, "3", 6, 7, "12", 34, "56", 78, 90, 11];
 
 function t3() {
-
+    a3_res = a3.map(elem => {
+        return Number(elem);
+    });
+    return a3_res;
 }
 
 document.querySelector('.b-3').onclick = () => {
@@ -64,7 +70,12 @@ document.querySelector('.b-3').onclick = () => {
 let a4 = [4, "3", 6, 7, "12", 34, "56", 78, 90, 11];
 
 function t4() {
-
+    a4_res = a4.filter(elem => {
+        if (typeof (elem) == 'number') {
+            return elem;
+        }
+    });
+    return a4_res;
 }
 
 document.querySelector('.b-4').onclick = () => {
@@ -79,7 +90,12 @@ document.querySelector('.b-4').onclick = () => {
 let a5 = [3, 14, 15, 92, '6'];
 
 function t5() {
-
+    a5_res = a5.filter(elem => {
+        if ((typeof (elem) == 'number') && (elem % 2 == 0)) {
+            return elem;
+        }
+    });
+    return a5_res;
 }
 
 document.querySelector('.b-5').onclick = () => {
@@ -94,7 +110,12 @@ document.querySelector('.b-5').onclick = () => {
 let a6 = [3, 14, 15, 92, "6", "5", "hello", 32];
 
 function t6() {
-
+    a6_res = a6.filter(elem => {
+        if ((typeof (elem) == 'number') && (elem > 14)) {
+            return elem;
+        }
+    });
+    return a6_res;
 }
 
 document.querySelector('.b-6').onclick = () => {
@@ -108,7 +129,10 @@ document.querySelector('.b-6').onclick = () => {
 let a7 = ['Alto`s Adventure', 'Angry Birds 2', 'Anno 2205', 'Assassin`s Creed Chronicles'];
 
 function t7() {
-
+    a7_res = a7.map(elem => {
+        return elem.toLowerCase();
+    });
+    return a7_res;
 }
 
 document.querySelector('.b-7').onclick = () => {
@@ -121,7 +145,12 @@ document.querySelector('.b-7').onclick = () => {
 let a8 = [3, 14, 15, 92, 7, 32, 59];
 
 function t8() {
-
+    a8.filter(function (item, index) {
+        if (item % 2 == 0) {
+            a8_res.push(index);
+        }
+    })
+    return a8_res;
 }
 
 document.querySelector('.b-8').onclick = () => {
@@ -137,6 +166,11 @@ let a9 = ['Quantum Break', 'Gears of War 4', 'Mass Effect: Andromeda', 'Far Cry 
 
 function t9() {
 
+    a9.forEach((item, index) => {
+        a9[index] = item.toLowerCase();
+    })
+    return a9;
+
 }
 
 document.querySelector('.b-9').onclick = () => {
@@ -151,7 +185,14 @@ document.querySelector('.b-9').onclick = () => {
 let a10 = [2, 13, 14, -7, 9, 5, 0, -2, 14];
 
 function t10() {
+    a10.forEach((item, index) => {
+        if (item < 0) {
+            console.log(a10[index]);
+            a10[index] = 0;
+        }
 
+    })
+    return a10;
 
 }
 
@@ -165,8 +206,13 @@ document.querySelector('.b-10').onclick = () => {
 let a11 = [2, 13, 14, -7, 9, 5, 0, -2, 14];
 
 function t11() {
-
-
+    a11.forEach((item, index) => {
+        if (index % 2 == 0) {
+            console.log(index);
+            a11_res.push(item);
+        }
+    })
+    return a11_res;
 }
 
 document.querySelector('.b-11').onclick = () => {
@@ -180,8 +226,7 @@ let a12 = [2, 13, 14, -7, 9, 5, 0, -2, 14];
 // a12 = 8; // на этой переменной можно проверить работает или нет ваша функция.
 
 function t12() {
-
-
+    return Array.isArray(a12);
 }
 
 document.querySelector('.b-12').onclick = () => {
@@ -196,8 +241,7 @@ let a13_num = 9;
 
 
 function t13() {
-
-
+    return a13.includes(a13_num);
 }
 
 document.querySelector('.b-13').onclick = () => {
@@ -208,12 +252,14 @@ document.querySelector('.b-13').onclick = () => {
 /*  Дан массив a14 = ['c', 'C', 'd', 'e', 'E']. С помощью метода includes функция t14 должна определить, есть ли значение из переменной a14_sym в массиве. Если да - то функция возврaщает true, если нет false. Обратите внимание, функция должна искать независимо от регистра. Т.е. если в a14_sym будет строка 'd' то возвратить true, однако и на строку 'D' тоже возвратить true. */
 
 let a14 = ['c', 'C', 'd', 'e', 'E'];
-let a14_sym = 'e';
+let a14_sym = 'D';
 
 
 function t14() {
-
-
+    a14.forEach((item, index) => {
+        a14[index] = item.toLowerCase();
+    })
+    return a14.includes(a14_sym.toLowerCase());
 }
 
 document.querySelector('.b-14').onclick = () => {
@@ -223,7 +269,7 @@ document.querySelector('.b-14').onclick = () => {
 // Task 15 ============================================
 /*  Дан массив a15. С помощью метода filter функция t15 должна создать на его основе массив a15_res содержащий записи только тех пользователей, номер паспорта (pnum) которых не пустая строка и длина номера - 6 символов. Функция должна возвращать a15_res.*/
 /*
-в данном примере нужно получить результат 
+в данном примере нужно получить результат
  [
     {
         "name" : "ivanov",
@@ -257,8 +303,10 @@ let a15 = [
 
 
 function t15() {
-
-
+    a15_res = a15.filter((item, index) => {
+        return (item.pnum.length == 6);
+    });
+   return a15_res;
 }
 
 document.querySelector('.b-15').onclick = () => {
