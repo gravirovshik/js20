@@ -107,7 +107,7 @@ function f7() {
         let val = el.name;
         result[key] = val;
     }
-    
+
     return result;
 }
 
@@ -122,7 +122,13 @@ document.querySelector('.b-7').addEventListener('click', () => {
 let a8 = [{ id: 23, name: 'Ivan' }, { id: 45, name: 'Petr' }];
 
 function f8() {
+    let result = [];
 
+    for (let el of a8) {
+        result.push(el.id);
+    }
+
+    return result;
 }
 
 document.querySelector('.b-8').addEventListener('click', () => {
@@ -135,7 +141,15 @@ document.querySelector('.b-8').addEventListener('click', () => {
 let a9 = [[4, 3, 2], [2, 5], [0, 0, 0, 0, 0]];
 
 function f9() {
-
+    let result = 0;
+    for (let el of a9) {
+        if (el.length > result) {
+            result = el.length;
+        }
+        console.log(el.length);
+    }
+    result = result - 1;
+    return result;
 }
 
 document.querySelector('.b-9').addEventListener('click', () => {
@@ -148,6 +162,14 @@ document.querySelector('.b-9').addEventListener('click', () => {
 let a10 = [4, 6, 9, 'Hello'];
 
 function f10() {
+
+    let result = {};
+
+    for (let el of a10) {
+        result[el] = el;
+    }
+
+    return result;
 
 }
 
@@ -166,6 +188,15 @@ let a11 = {
 }
 
 function f11() {
+    let str = '';
+    let out = document.querySelector('.out-11');
+
+    for (let el in a11) {
+        if (a11[el] > 10) {
+            str = str + `${a11[el]} `
+        }
+    }
+    out.innerHTML = str;
 
 }
 
@@ -177,6 +208,15 @@ document.querySelector('.b-11').addEventListener('click', f11);
 let a12 = [4, 5, 6, 7];
 
 function f12() {
+    let str = '';
+    let out = document.querySelector('.out-12');
+
+    for (let el of a12) {
+
+        str = str + `${el} `
+
+    }
+    out.innerHTML = str;
 
 }
 
@@ -189,7 +229,16 @@ document.querySelector('.b-12').addEventListener('click', f12);
 let a13 = 'testone';
 
 function f13() {
+    let str = '';
+    let a131 = a13.split('');
+    let out = document.querySelector('.out-13');
 
+    for (let el of a131) {
+
+        str = str + `${el} `
+
+    }
+    out.innerHTML = str;
 }
 
 document.querySelector('.b-13').addEventListener('click', f13);
@@ -203,6 +252,15 @@ let a14 = new Set([4, 5, 6]);
 
 function f14() {
 
+    let out = document.querySelector('.out-14');
+    let str = '';
+
+    for (let el of a14) {
+        str = str + `${el} `
+    }
+
+    out.innerHTML = str;
+
 }
 
 document.querySelector('.b-14').addEventListener('click', f14);
@@ -212,6 +270,11 @@ document.querySelector('.b-14').addEventListener('click', f14);
 
 
 function f15() {
+    let nods = document.querySelectorAll('.out-15');
+    console.log(nods);
+    for (let el of nods) {
+        el.innerHTML = 15;
+    }
 
 }
 
