@@ -260,14 +260,10 @@ function t10() {
 
     for (let i = 0; i < 5; i++) {
 
-        for (let k = 1; k < 11; k++) {
-            if (k < 10) {
-                out += `${i}${k}_`;
-            } else {
-                out += `${k}_`;
-            }
-
+        for (let k = 1; k < 10; k++) {
+            out += `${i}${k}_`;
         }
+        out = out + `${i+1}0_`
         out += '<br>';
     }
 
