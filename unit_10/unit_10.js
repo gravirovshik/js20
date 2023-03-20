@@ -126,18 +126,18 @@ document.querySelector('.b-7').onclick = f7;
 // Вывод в out-8
 
 let ar8 = [];
+let out8 = document.querySelector('.out-8');
+let out81 = document.querySelector('.out-8-1');
 
 function f8() {
-    ar8[3] = 3, 14;
+    ar8[3] = 3.14;
     ar8[4] = 17;
     ar8[6] = 5;
 
-    let out8 = document.querySelector('.out-8');
-    let out81 = document.querySelector('.out-8-1');
     let str = '';
 
     for (let i = 0; i < ar8.length; i++) {
-        str += ar8[i] + '-';
+        str += `${ar8[i]}-`;
     }
 
     out8.innerHTML = str;
@@ -186,17 +186,19 @@ document.querySelector('.b-10').onclick = f10;
 // Вывод в out-11
 
 let ar11 = [2, 3, 4, 5, 6, 7];
+let out11 = document.querySelector('.out-11');
 
 function f11() {
+
     let temp = ar11[2];
     ar11[2] = ar11[4];
     ar11[4] = temp;
-    let out = document.querySelector('.out-11');
+
     let str = '';
     for (let i = 0; i < ar11.length; i++) {
         str += ar11[i] + ' ';
     }
-    out.innerHTML = str;
+    out11.innerHTML = str;
 
 }
 
@@ -210,18 +212,19 @@ document.querySelector('.b-11').onclick = f11;
 // Вывод в out-12
 
 let ar12 = ['test', 'west', 'list', 'class', 'best'];
+let out12 = document.querySelector('.out-12');
 
 function f12() {
 
     let temp = ar12[0];
     ar12[0] = ar12[ar12.length - 1];
     ar12[ar12.length - 1] = temp;
-    let out = document.querySelector('.out-12');
+
     let str = '';
     for (let i = 0; i < ar12.length; i++) {
         str += ar12[i] + ' ';
     }
-    out.innerHTML = str;
+    out12.innerHTML = str;
 
 }
 
@@ -237,14 +240,15 @@ document.querySelector('.b-12').onclick = f12;
 
 
 let ar13 = ['test', 'west', 'list', 'class', 'best'];
+let out13 = document.querySelector('.out-13');
 
 function f13() {
-    let out = document.querySelector('.out-13');
+
     let str = '';
     for (let i = 0; i < ar13.length; i++) {
         str += `${i} ${ar13[i]} `
     }
-    out.innerHTML = str;
+    out13.innerHTML = str;
 }
 
 document.querySelector('.b-13').onclick = f13;
@@ -257,14 +261,16 @@ document.querySelector('.b-13').onclick = f13;
 // Вывод в out-14
 
 let ar14 = [1, 2, 3, 'hello', 66];
+let out14 = document.querySelector('.out-14');
 
 function f14() {
-    let out = document.querySelector('.out-14');
+
     let str = '';
     for (let i = ar14.length - 1; i >= 0; i--) {
         str += `${ar14[i]} `
     }
-    out.innerHTML = str;
+
+    out14.innerHTML = str;
 
 }
 
@@ -277,9 +283,10 @@ document.querySelector('.b-14').onclick = f14;
 // Вывод в out-15
 
 let ar15 = [0, 2, 5, -4, 6, 22, -9, -12, 8, 12, 13, 78];
+let out15 = document.querySelector('.out-15');
 
 function f15() {
-    let out = document.querySelector('.out-15');
+
     let str = '';
     for (let i = 0; i < ar15.length; i++) {
         if (ar15[i] > 0) {
@@ -287,7 +294,7 @@ function f15() {
         }
 
     }
-    out.innerHTML = str;
+    out15.innerHTML = str;
 
 }
 
@@ -300,12 +307,13 @@ document.querySelector('.b-15').onclick = f15;
 // Вывод в out-16
 
 let ar16 = [0, 2, 5, -4, 6, 22, -9, -12, 8, 12, 13, 78];
-let ar16_odd = [];
-let ar16_even = [];
+
+let outOdd = document.querySelector('.out-16-odd');
+let outEven = document.querySelector('.out-16-even');
 
 function f16() {
-    let outOdd = document.querySelector('.out-16-odd');
-    let outEven = document.querySelector('.out-16-even');
+    let ar16_odd = [];
+    let ar16_even = [];
 
     for (let i = 0; i < ar16.length; i++) {
         if (i % 2 == 0) {
@@ -367,7 +375,7 @@ function f18() {
 
     for (let i = 0; i < ar18.length; i++) {
         if (ar18[i] > max) {
-           max = ar18[i];
+            max = ar18[i];
         }
     }
     out.innerHTML = max;
@@ -392,8 +400,8 @@ function f19() {
 
     for (let i = 0; i < ar19.length; i++) {
         if (ar19[i] < min) {
-           min = ar19[i];
-           index = i;
+            min = ar19[i];
+            index = i;
         }
     }
     out.innerHTML = index;
