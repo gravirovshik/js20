@@ -154,8 +154,28 @@ document.querySelector('.b-4').onclick = f4;
 // если запрос отправлен верно, то будет получен массив c случайным числом от min до max
 // выведите в .out-5 полученное число.
 
+let out5 = document.querySelector('.out-5');
 
 function f5() {
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', URL + '/api/25/random/random-number');
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    const data = new FormData();
+    data.append('min', min);
+    data.append('max', max);
+
+    xhr.onload = function () {
+
+        const data = JSON.parse(xhr.response);
+        out5.innerHTML = data["random-number"];
+    };
+
+    xhr.send(data);
+
 
 
 }
@@ -172,9 +192,25 @@ document.querySelector('.b-5').onclick = f5;
 // выведите статус ответа сервера в .out-6-status
 // выведите сообщение ответа сервера в out-6-response
 
+let out6status = document.querySelector('.out-6-status');
+let out6response = document.querySelector('.out-6-response');
+
 function f6() {
 
+    const xhr = new XMLHttpRequest();
 
+    xhr.open('POST', URL + '/api/25/random/circle');
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    xhr.onload = function () {
+
+        out6status.innerHTML = xhr.status;
+        out6response.innerHTML = xhr.response;
+
+    };
+
+    xhr.send();
 }
 
 document.querySelector('.b-6').onclick = f6;
@@ -191,8 +227,27 @@ document.querySelector('.b-6').onclick = f6;
 // не забывайте для авторизации отправлять apikey с указанным ключом.
 
 let requestRace = 'gaal';
+let out7 = document.querySelector('.out-7');
 
 function f7() {
+
+    out7.innerHTML = '';
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('GET', URL + `/api/25/sr/read?race=${requestRace}`);
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    xhr.onload = function () {
+
+        const data = JSON.parse(xhr.response);
+        const newImg = document.createElement('img');
+        newImg.src = URL + data.result.image;
+        out7.appendChild(newImg);
+    };
+
+    xhr.send();
 
 }
 
@@ -206,7 +261,24 @@ document.querySelector('.b-7').onclick = f7;
 // если запрос отправлен верно, то будет получен массив сотрудников компании.
 // выведите в .out-8 число сотрудников компании itemCount.
 
+let out8 = document.querySelector('.out-8');
+
 function f8() {
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', URL + '/api/25/employee/read');
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    xhr.onload = function () {
+
+        const data = JSON.parse(xhr.response);
+        out8.innerHTML = data.itemCount;
+
+    };
+
+    xhr.send();
 
 }
 
@@ -220,7 +292,27 @@ document.querySelector('.b-8').onclick = f8;
 // если запрос отправлен верно, то будет получен массив с описанием сотрудника компании с id = 5
 // выведите обозначение (designation) сотрудника в .out-9
 
+let out9 = document.querySelector('.out-9');
+
 function f9() {
+
+    let i9 = +document.querySelector('.i-9').value;
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', URL + '/api/25/employee/read/' + i9);
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    xhr.onload = function () {
+
+        const data = JSON.parse(xhr.response);
+        console.log(data);
+        out9.innerHTML = data.result.designation;
+
+    };
+
+    xhr.send();
 
 }
 
@@ -236,7 +328,27 @@ document.querySelector('.b-9').onclick = f9;
 
 // не забывайте для авторизации отправлять apikey с указанным ключом.
 
+let out10 = document.querySelector('.out-10');
+
 function f10() {
+
+    let i10 = +document.querySelector('.i-10').value;
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('GET', URL + '/api/25/employee/read/' + i10);
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    xhr.onload = function () {
+
+        const data = JSON.parse(xhr.response);
+        console.log(data);
+        out10.innerHTML = data.result.age;
+
+    };
+
+    xhr.send();
 
 }
 
