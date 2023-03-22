@@ -89,7 +89,7 @@ function f3() {
 
     const xhr = new XMLHttpRequest();
 
-    xhr.open('GET', URL + '/api/25/sr/read');
+    xhr.open('POST', URL + '/api/25/sr/read');
 
     xhr.setRequestHeader('apikey', APIKEY);
 
@@ -122,11 +122,25 @@ document.querySelector('.b-3').onclick = f3;
 // выведите в .out-4 полученное число.
 
 // не забывайте для авторизации отправлять apikey с указанным ключом.
-
+let out4 = document.querySelector('.out-4');
 let min = 1000;
 let max = 1150;
 
 function f4() {
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('GET', URL + `/api/25/random/random-number?min=${min}&max=${max}`);
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    xhr.onload = function () {
+
+        const data = JSON.parse(xhr.response);
+        out4.innerHTML = data["random-number"];
+    };
+
+    xhr.send();
 
 }
 
