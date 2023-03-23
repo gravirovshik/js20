@@ -365,7 +365,29 @@ document.querySelector('.b-10').onclick = f10;
 
 // не забывайте для авторизации отправлять apikey с указанным ключом.
 
+let out11 = document.querySelector('.out-11');
+
 function f11() {
+
+    let i11 = +document.querySelector('.i-11').value;
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', URL + '/api/25/random/generate-password');
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    const data = new FormData();
+    data.append('length', i11);
+
+    xhr.onload = function () {
+
+        const data = JSON.parse(xhr.response);
+        out11.innerHTML = data.password;
+
+    };
+
+    xhr.send(data);
 
 }
 
@@ -383,9 +405,37 @@ document.querySelector('.b-11').onclick = f11;
 
 // не забывайте для авторизации отправлять apikey с указанным ключом.
 
+let out12 = document.querySelector('.out-12');
+let che12 = document.querySelector('.ch-12');
 
 function f12() {
 
+    let i12 = +document.querySelector('.i-12').value;
+    let symbols = 0;
+
+    if (che12.checked) {
+        symbols = 1;
+    }
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', URL + '/api/25/random/generate-password');
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    const data = new FormData();
+    data.append('length', i12);
+    data.append('symbols', symbols);
+
+    xhr.onload = function () {
+
+        const data = JSON.parse(xhr.response);
+        out12.innerHTML = data.password;
+
+    };
+
+    xhr.send(data);
+    // out12.innerHTML = symbols;
 }
 
 document.querySelector('.b-12').onclick = f12;
@@ -403,7 +453,43 @@ document.querySelector('.b-12').onclick = f12;
 
 // не забывайте для авторизации отправлять apikey с указанным ключом.
 
+let out13 = document.querySelector('.out-13');
+let che131 = document.querySelector('.ch-131');
+let che132 = document.querySelector('.ch-132');
+
 function f13() {
+
+    let i13 = +document.querySelector('.i-13').value;
+    let symbols = 0;
+    let uppercase = 0;
+
+    if (che131.checked) {
+        symbols = 1;
+    }
+
+    if (che132.checked) {
+        uppercase = 1;
+    }
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', URL + '/api/25/random/generate-password');
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    const data = new FormData();
+    data.append('length', i13);
+    data.append('symbols', symbols);
+    data.append('uppercase', uppercase);
+
+    xhr.onload = function () {
+
+        const data = JSON.parse(xhr.response);
+        out13.innerHTML = data.password;
+
+    };
+
+    xhr.send(data);
 
 }
 
@@ -418,8 +504,26 @@ document.querySelector('.b-13').onclick = f13;
 // если все сделано верно, то получите массив с описанием расы из игры КР.
 // выведите в .out-14 описание description расы (как HTML)
 
-function f14() {
+let out14 = document.querySelector('.out-14');
+let sel14 = document.querySelector('.s-14');
 
+function f14() {
+    console.log(sel14.value);
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('GET', URL + `/api/25/sr/read/${sel14.value}`);
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    xhr.onload = function () {
+
+        const data = JSON.parse(xhr.response);
+        out14.innerHTML = data.result.description;
+
+    };
+
+    xhr.send();
 }
 
 document.querySelector('.b-14').onclick = f14;
@@ -435,7 +539,32 @@ document.querySelector('.b-14').onclick = f14;
 // в начале функции очистите .out-15
 // выведите изображения рас в .out-15
 
+let out15 = document.querySelector('.out-15');
+
 function f15() {
+
+    out15.innerHTML = '';
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', URL + `/api/25/sr/read/`);
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    xhr.onload = function () {
+
+        const data = JSON.parse(xhr.response);
+
+        for (let el of data.result) {
+            let newImg = document.createElement('img');
+            newImg.src = URL + el.image;
+            out15.appendChild(newImg);
+
+        }
+
+    };
+
+    xhr.send();
 
 }
 
@@ -450,7 +579,32 @@ document.querySelector('.b-15').onclick = f15;
 // если все сделано верно, то получите массив с описанием всех миров игры GoW.
 // выведите в .out-16 названия (title) миров через пробел.
 
+let out16 = document.querySelector('.out-16');
+
 function f16() {
+
+    let str = '';
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('GET', URL + `/api/25/gow/world`);
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    xhr.onload = function () {
+
+        const data = JSON.parse(xhr.response);
+        console.log(data);
+
+        for (let el of data.worlds) {
+            str = str + `${el.title} `;
+        }
+
+        out16.innerHTML = str;
+
+    };
+
+    xhr.send();
 
 }
 
@@ -466,7 +620,31 @@ document.querySelector('.b-16').onclick = f16;
 // если все сделано верно, то получите описание выбранного в select .s-17
 // выведите в .out-17 описание мира.
 
+let out17 = document.querySelector('.out-17');
+let sel17 = document.querySelector('.s-17');
+
 function f17() {
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('GET', URL + `/api/25/gow/world/${sel17.value}`);
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    xhr.onload = function () {
+
+        const data = JSON.parse(xhr.response);
+
+        try {
+            out17.innerHTML = data.world.description;
+        }
+        catch (err) {
+            out17.innerHTML = 'Выберите мир!'
+        }
+
+    };
+
+    xhr.send();
 
 }
 
@@ -482,9 +660,36 @@ document.querySelector('.b-17').onclick = f17;
 // выведите в .out-18 руны как изображения, а в качестве атрибута alt установите название мира.
 // выполните очистку .out-18 в начале функции
 
+let out18 = document.querySelector('.out-18');
+
 function f18() {
 
-}
+    out18.innerHTML = '';
 
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', URL + `/api/25/gow/rune`);
+
+    xhr.setRequestHeader('apikey', APIKEY);
+
+    xhr.onload = function () {
+
+        const data = JSON.parse(xhr.response);
+        console.log(data.rune);
+
+        for (let key in data.rune) {
+
+            let newImg = document.createElement('img');
+            newImg.setAttribute("alt", key);
+            newImg.src = URL + data.rune[key];
+            out18.appendChild(newImg);
+
+        }
+
+    };
+
+    xhr.send();
+
+}
 
 document.querySelector('.b-18').onclick = f18;
