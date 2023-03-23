@@ -7,9 +7,33 @@
 
 // Результат - объект со списком сотрудников. Выведите в out-1 возраст сотрудников через пробел.
 // не забывайте для авторизации отправлять apikey с указанным ключом.
+let out1 = document.querySelector('.out-1');
 
 async function f1() {
-   
+
+  let str = '';
+
+  fetch(URL + '/api/26/employee/read', {
+    method: 'GET',
+
+    headers: {
+
+      'apikey': APIKEY,
+      'Content-type': 'application/json; charset=UTF-8',
+
+    },
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+      for (let el of data.result) {
+        str = str + `${el.age} `;
+      }
+      out1.innerHTML = str;
+    });
+
 }
 
 document.querySelector('.b-1').addEventListener('click', f1);
@@ -23,10 +47,32 @@ document.querySelector('.b-1').addEventListener('click', f1);
 
 // Результат - объект с описанием сотрудника. Выведите в out-2 email полученного сотрудника.
 
+let out2 = document.querySelector('.out-2');
+let i2 = document.querySelector('.i-2');
 
+async function f2() {
 
-async function f2(){
-   
+  fetch(URL + '/api/26/employee/read?id=' + i2.value, {
+
+    method: 'GET',
+
+    headers: {
+      'apikey': APIKEY,
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+      if (data.result.email == undefined) {
+        out2.innerHTML = data.error;
+      }
+      else out2.innerHTML = data.result.email;
+    });
+
 }
 
 document.querySelector('.b-2').onclick = f2;
@@ -40,28 +86,80 @@ document.querySelector('.b-2').onclick = f2;
 
 // Результат - объект с описанием сотрудника. Выведите в out-3 name полученного сотрудника.
 
-async function f3(){
-    
+let out3 = document.querySelector('.out-3');
+let i3 = document.querySelector('.i-3');
+
+async function f3() {
+
+  fetch(URL + '/api/26/employee/read/' + i3.value, {
+
+    method: 'POST',
+
+    headers: {
+      'apikey': APIKEY,
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+      if (data.result.name == undefined) {
+        out3.innerHTML = data.error;
+      }
+      else out3.innerHTML = data.result.name;
+    });
+
 }
 
 document.querySelector('.b-3').onclick = f3;
 
 
-// Task 4. 
+// Task 4.
 // При нажатии кнопки .b-4 срабатывает функция f4. Функция отсылает запрос методом FETCH на https://api.itgid.info со следующими параметрами:
 // url: /api/26/sr/read
 // method: POST
 
 // Результат - объект с описанием рас игры КР. Выведите в out-4 название рас (title) через пробел.
 
+let out4 = document.querySelector('.out-4');
 
-async function f4(){
-   
+async function f4() {
+
+  let str = '';
+
+  fetch(URL + '/api/26/sr/read/', {
+
+    method: 'POST',
+
+    headers: {
+
+      'apikey': APIKEY,
+      'Content-type': 'application/json; charset=UTF-8',
+
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+
+      for (let el of data.result) {
+        str = str + `${el.title} `;
+      }
+
+      out4.innerHTML = str;
+    });
+
 }
 
 document.querySelector('.b-4').onclick = f4;
 
-// Task 5. 
+// Task 5.
 // При нажатии кнопки .b-5 срабатывает функция f5. Функция отсылает запрос методом FETCH на https://api.itgid.info со следующими параметрами:
 // url: /api/26/sr/read?race=gaal
 // method: GET
@@ -69,9 +167,37 @@ document.querySelector('.b-4').onclick = f4;
 
 // Результат - объект с описанием указанной расы. Выведите в out-5 описание расы (description). Вывод осуществляйте через innerHTML.
 
+let out5 = document.querySelector('.out-5');
+let sl5 = document.querySelector('.s-5');
 
-async function f5(){
-   
+async function f5() {
+
+  console.log(sl5.value);
+
+  fetch(URL + '/api/26/sr/read/?race=' + sl5.value, {
+
+    method: 'GET',
+
+    headers: {
+
+      'apikey': APIKEY,
+      'Content-type': 'application/json; charset=UTF-8',
+
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+
+      if ("itemCount" in data) {
+        out5.innerHTML = 'Выберите расу';
+      }
+      else out5.innerHTML = data.result.description;
+      
+    });
 }
 
 document.querySelector('.b-5').onclick = f5;
@@ -84,8 +210,8 @@ document.querySelector('.b-5').onclick = f5;
 // поскольку такого адреса в API не предусмотрено, то сервер должен вернуть ошибку 404
 // выведите статус ответа сервера в .out-6-status
 
-async function f6(){
-   
+async function f6() {
+
 }
 
 document.querySelector('.b-6').onclick = f6;
@@ -96,12 +222,12 @@ document.querySelector('.b-6').onclick = f6;
 // method: POST
 // human - название расы из select .s-7
 
-// Результат - объект с описанием указанной расы. Выведите в out-7 изображение расы. Картинку формируйте через createElement. 
+// Результат - объект с описанием указанной расы. Выведите в out-7 изображение расы. Картинку формируйте через createElement.
 // В начале функции делайте очистку .out-7.
 
 
-async function f7(){
-    
+async function f7() {
+
 }
 
 document.querySelector('.b-7').onclick = f7;
@@ -113,8 +239,8 @@ document.querySelector('.b-7').onclick = f7;
 // если запрос отправлен верно, то будет получен объект со случайным числом
 // выведите в .out-8 данное число.
 
-async function f8(){
-    
+async function f8() {
+
 }
 
 document.querySelector('.b-8').onclick = f8;
@@ -131,8 +257,8 @@ document.querySelector('.b-8').onclick = f8;
 let min = 400;
 let max = 500;
 
-async function f9(){
-   
+async function f9() {
+
 }
 
 document.querySelector('.b-9').onclick = f9;
@@ -146,8 +272,8 @@ document.querySelector('.b-9').onclick = f9;
 // если запрос отправлен верно, то будет получен объект со случайным число от min до max.
 // выведите число в .out-10
 
-async function f10(){
-    
+async function f10() {
+
 }
 
 document.querySelector('.b-10').onclick = f10;
@@ -156,13 +282,13 @@ document.querySelector('.b-10').onclick = f10;
 // При нажатии кнопки .b-11 срабатывает функция f11. Функция отсылает запрос методом FETCH на https://api.itgid.info со следующими параметрами:
 // url: /api/26/random/random-string?length=16
 // method: GET
-// Значение длины строки получаем из input .i-16 
+// Значение длины строки получаем из input .i-16
 
 // Если запрос сделан правильно, то сервер возвратит объект с строкой случайных символов длиной 16.
 // Выведите строку в .out-11
 
-async function f11(){
-    
+async function f11() {
+
 }
 
 document.querySelector('.b-11').onclick = f11;
@@ -171,15 +297,15 @@ document.querySelector('.b-11').onclick = f11;
 // При нажатии кнопки .b-12 срабатывает функция f12. Функция отсылает запрос методом FETCH на https://api.itgid.info со следующими параметрами:
 // url: /api/26/random/generate-password
 // method: POST
-// укажите в body POST запроса аргумент length равный числу из input .i-12 (form-data) 
+// укажите в body POST запроса аргумент length равный числу из input .i-12 (form-data)
 // укажите в body POST запроса аргумент symbols равный 0 или 1, данные берем из состояния checkbox .ch-12
 // если запрос отправлен верно, то будет возвращен пароль длиной равный указанной длине и если указан symbols равный 1 то в пароле будут спецсимволы
 // выведите в .out-12 полученный пароль.
 
 
 
-async function f12(){
-   
+async function f12() {
+
 }
 
 document.querySelector('.b-12').onclick = f12;
@@ -188,7 +314,7 @@ document.querySelector('.b-12').onclick = f12;
 // При нажатии кнопки .b-13 срабатывает функция f13. Функция отсылает запрос методом FETCH на https://api.itgid.info со следующими параметрами:
 // url: /api/26/random/generate-password
 // method: POST
-// укажите в body POST запроса аргумент length равный числу из input .i-13 (form-data) 
+// укажите в body POST запроса аргумент length равный числу из input .i-13 (form-data)
 // укажите в body POST запроса аргумент symbols равный 0 или 1, данные берем из состояния checkbox .ch-131
 // укажите в body POST запроса аргумент uppercase равный 0 или 1, данные берем из состояния checkbox .ch-132
 // если запрос отправлен верно, то будет возвращен пароль длиной равный указанной длине и если указан symbols равный 1 то в пароле будут спецсимволы, и аналогично если uppercase равен 1 то будут символы в разных регистрах.
@@ -197,7 +323,7 @@ document.querySelector('.b-12').onclick = f12;
 
 // не забывайте для авторизации отправлять apikey с указанным ключом.
 
-async function f13(){
+async function f13() {
 
 }
 
@@ -209,10 +335,10 @@ document.querySelector('.b-13').onclick = f13;
 // url: /api/26/gow/world
 // method: GET
 // если все сделано верно, то получите объект с описанием миров игры GoW
-// выведите в .out-14 title миров через пробел. 
+// выведите в .out-14 title миров через пробел.
 
-async function f14(){
-   
+async function f14() {
+
 }
 
 document.querySelector('.b-14').onclick = f14;
@@ -225,8 +351,8 @@ document.querySelector('.b-14').onclick = f14;
 // где niflheim - название мира полученное из .s-15
 // выведите описание мира (description) в out-15
 
-async function f15(){
-   
+async function f15() {
+
 }
 
 
@@ -237,11 +363,11 @@ document.querySelector('.b-15').onclick = f15;
 // url: /api/26/gow/governor/сурт
 // method: GET
 // имя правителя - получите из select .s-16
-// если все сделано верно, то получите объект с описанием мира где правитель Сурт игры GoW. 
+// если все сделано верно, то получите объект с описанием мира где правитель Сурт игры GoW.
 // выведите в .out-16 руну данного мира. Как изображение (createElement). Очищайте out-16 в начале функции.
 
-async function f16(){
-    
+async function f16() {
+
 }
 
 
@@ -255,8 +381,8 @@ document.querySelector('.b-16').onclick = f16;
 // если все сделано верно, то получите объект с текущим временем сервера.
 // выведите в .out-17 время в формате час:минуты
 
-async function f17(){
-   
+async function f17() {
+
 }
 
 
@@ -268,10 +394,10 @@ document.querySelector('.b-17').onclick = f17;
 // url: /api/26/gow/rune
 // method: POST
 // если все сделано верно, то получите объект с названиями миров и рунами
-// выведите в .out-18 руны как изображения, а в качестве атрибута alt установите название мира. 
+// выведите в .out-18 руны как изображения, а в качестве атрибута alt установите название мира.
 // выполните очистку .out-18 в начале функции
 
-async function f18(){
+async function f18() {
 
 }
 
