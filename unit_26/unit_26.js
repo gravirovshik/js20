@@ -14,13 +14,12 @@ async function f1() {
   let str = '';
 
   fetch(URL + '/api/26/employee/read', {
+
     method: 'GET',
 
     headers: {
-
       'apikey': APIKEY,
       'Content-type': 'application/json; charset=UTF-8',
-
     },
   })
     .then((response) => {
@@ -135,10 +134,8 @@ async function f4() {
     method: 'POST',
 
     headers: {
-
       'apikey': APIKEY,
       'Content-type': 'application/json; charset=UTF-8',
-
     },
 
   })
@@ -147,11 +144,9 @@ async function f4() {
       return response.json();
     })
     .then((data) => {
-
       for (let el of data.result) {
         str = str + `${el.title} `;
       }
-
       out4.innerHTML = str;
     });
 
@@ -179,10 +174,8 @@ async function f5() {
     method: 'GET',
 
     headers: {
-
       'apikey': APIKEY,
       'Content-type': 'application/json; charset=UTF-8',
-
     },
 
   })
@@ -191,12 +184,10 @@ async function f5() {
       return response.json();
     })
     .then((data) => {
-
       if ("itemCount" in data) {
         out5.innerHTML = 'Выберите расу';
       }
       else out5.innerHTML = data.result.description;
-      
     });
 }
 
@@ -210,7 +201,24 @@ document.querySelector('.b-5').onclick = f5;
 // поскольку такого адреса в API не предусмотрено, то сервер должен вернуть ошибку 404
 // выведите статус ответа сервера в .out-6-status
 
+let out6 = document.querySelector('.out-6-status');
+
 async function f6() {
+
+  fetch(URL + '/api/26/run', {
+
+    method: 'GET',
+
+    headers: {
+      'apikey': APIKEY,
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      out6.innerHTML = response.status;
+    });
 
 }
 
@@ -225,8 +233,38 @@ document.querySelector('.b-6').onclick = f6;
 // Результат - объект с описанием указанной расы. Выведите в out-7 изображение расы. Картинку формируйте через createElement.
 // В начале функции делайте очистку .out-7.
 
+let out7 = document.querySelector('.out-7');
+let sl7 = document.querySelector('.s-7');
 
 async function f7() {
+
+  out7.innerHTML = '';
+
+  fetch(URL + '/api/26/sr/read/' + sl7.value, {
+
+    method: 'POST',
+
+    headers: {
+      'apikey': APIKEY,
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      if ('itemCount' in data) {
+        out7.innerHTML = 'Выберите расу';
+      } else {
+        const newImg = document.createElement('img');
+        newImg.src = URL + data.result.image;
+        out7.appendChild(newImg);
+      }
+
+    });
 
 }
 
@@ -239,7 +277,27 @@ document.querySelector('.b-7').onclick = f7;
 // если запрос отправлен верно, то будет получен объект со случайным числом
 // выведите в .out-8 данное число.
 
+let out8 = document.querySelector('.out-8');
+
 async function f8() {
+
+  fetch(URL + '/api/26/random/random-number', {
+
+    method: 'GET',
+
+    headers: {
+      'apikey': APIKEY,
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+      out8.innerHTML = data["random-number"];
+    });
 
 }
 
@@ -254,10 +312,29 @@ document.querySelector('.b-8').onclick = f8;
 // если запрос отправлен верно, то будет получен объект со случайным число от min до max.
 // выведите число в .out-9
 
-let min = 400;
-let max = 500;
+let min = 50;
+let max = 90;
+let out9 = document.querySelector('.out-9');
 
 async function f9() {
+
+  fetch(`${URL}/api/26/random/random-number?min=${min}&max=${max}`, {
+
+    method: 'GET',
+
+    headers: {
+      'apikey': APIKEY,
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+      out9.innerHTML = data["random-number"];
+    });
 
 }
 
@@ -272,8 +349,33 @@ document.querySelector('.b-9').onclick = f9;
 // если запрос отправлен верно, то будет получен объект со случайным число от min до max.
 // выведите число в .out-10
 
+let out10 = document.querySelector('.out-10');
+
+let body10 = new FormData();
+body10.append('min', min);
+body10.append('max', max);
+
 async function f10() {
 
+  fetch(URL + '/api/26/random/random-number', {
+
+    method: 'POST',
+    body: body10,
+
+    headers: {
+      'apikey': APIKEY,
+      'Content-type': 'multipart/form-data'
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      out10.innerHTML = data["random-number"];
+    });
 }
 
 document.querySelector('.b-10').onclick = f10;
@@ -287,7 +389,28 @@ document.querySelector('.b-10').onclick = f10;
 // Если запрос сделан правильно, то сервер возвратит объект с строкой случайных символов длиной 16.
 // Выведите строку в .out-11
 
+let out11 = document.querySelector('.out-11');
+let i11 = document.querySelector('.i-11');
+
 async function f11() {
+
+  fetch(`${URL}/api/26/random/random-string?length=${i11.value}`, {
+
+    method: 'GET',
+
+    headers: {
+      'apikey': APIKEY,
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      out11.innerHTML = data["random-string"];
+    });
 
 }
 
@@ -302,9 +425,39 @@ document.querySelector('.b-11').onclick = f11;
 // если запрос отправлен верно, то будет возвращен пароль длиной равный указанной длине и если указан symbols равный 1 то в пароле будут спецсимволы
 // выведите в .out-12 полученный пароль.
 
-
+let out12 = document.querySelector('.out-12');
+let i12 = document.querySelector('.i-12');
+let ch12 = document.querySelector('.ch-12');
 
 async function f12() {
+
+  let symbol = 0;
+  if (ch12.checked) {
+    symbol = 1;
+  }
+
+  const body12 = new FormData();
+  body12.append('length', i12.value);
+  body12.append('symbols', symbol);
+
+
+  fetch(URL + '/api/26/random/generate-password', {
+
+    method: 'POST',
+    body: body12,
+
+    headers: {
+      'apikey': APIKEY,
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+      out12.innerHTML = data.password;
+    });
 
 }
 
@@ -323,7 +476,47 @@ document.querySelector('.b-12').onclick = f12;
 
 // не забывайте для авторизации отправлять apikey с указанным ключом.
 
+let out13 = document.querySelector('.out-13');
+let i13 = document.querySelector('.i-13');
+let ch131 = document.querySelector('.ch-131');
+let ch132 = document.querySelector('.ch-132');
+
+
 async function f13() {
+
+  let symbol = 0;
+  if (ch131.checked) {
+    symbol = 1;
+  }
+
+  let upp = 0;
+  if (ch132.checked) {
+    upp = 1;
+  }
+
+  const body13 = new FormData();
+  body13.append('length', i13.value);
+  body13.append('symbols', symbol);
+  body13.append('uppercase', upp);
+
+
+  fetch(URL + '/api/26/random/generate-password', {
+
+    method: 'POST',
+    body: body13,
+
+    headers: {
+      'apikey': APIKEY,
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+      out13.innerHTML = data.password;
+    });
 
 }
 
@@ -337,7 +530,36 @@ document.querySelector('.b-13').onclick = f13;
 // если все сделано верно, то получите объект с описанием миров игры GoW
 // выведите в .out-14 title миров через пробел.
 
+let out14 = document.querySelector('.out-14');
+
 async function f14() {
+
+  fetch(`${URL}/api/26/gow/world`, {
+
+    method: 'GET',
+
+    headers: {
+      'apikey': APIKEY,
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+
+      console.log(data);
+      let str = '';
+
+      for (let el of data.worlds) {
+        str = str + `${el.title} `;
+      }
+
+      out14.innerHTML = str;
+
+    });
 
 }
 
@@ -351,7 +573,36 @@ document.querySelector('.b-14').onclick = f14;
 // где niflheim - название мира полученное из .s-15
 // выведите описание мира (description) в out-15
 
+let out15 = document.querySelector('.out-15');
+let sl15 = document.querySelector('.s-15');
+
 async function f15() {
+
+  out15.innerHTML = '';
+
+  fetch(URL + '/api/26/gow/world/' + sl15.value, {
+
+    method: 'GET',
+
+    headers: {
+      'apikey': APIKEY,
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      if ('itemCount' in data) {
+        out15.innerHTML = 'Выберите мир';
+      } else {
+        out15.innerHTML = data.world.description;
+      }
+
+    });
 
 }
 
@@ -366,7 +617,34 @@ document.querySelector('.b-15').onclick = f15;
 // если все сделано верно, то получите объект с описанием мира где правитель Сурт игры GoW.
 // выведите в .out-16 руну данного мира. Как изображение (createElement). Очищайте out-16 в начале функции.
 
+let out16 = document.querySelector('.out-16');
+let sl16 = document.querySelector('.s-16');
+
 async function f16() {
+
+  out16.innerHTML = '';
+
+  fetch(URL + '/api/26/gow/governor/' + sl16.value, {
+
+    method: 'GET',
+
+    headers: {
+      'apikey': APIKEY,
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      const newImg = document.createElement('img');
+      newImg.src = URL + data.world.rune;
+      out16.appendChild(newImg);
+
+    });
 
 }
 
@@ -381,7 +659,30 @@ document.querySelector('.b-16').onclick = f16;
 // если все сделано верно, то получите объект с текущим временем сервера.
 // выведите в .out-17 время в формате час:минуты
 
+let out17 = document.querySelector('.out-17');
+
 async function f17() {
+
+  out17.innerHTML = '';
+
+  fetch(URL + '/api/26/get-time', {
+
+    method: 'POST',
+
+    headers: {
+      'apikey': APIKEY,
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      out17.innerHTML = `${data.time.h}:${data.time.m}`;
+    });
 
 }
 
@@ -397,7 +698,41 @@ document.querySelector('.b-17').onclick = f17;
 // выведите в .out-18 руны как изображения, а в качестве атрибута alt установите название мира.
 // выполните очистку .out-18 в начале функции
 
+let out18 = document.querySelector('.out-18');
+
 async function f18() {
+
+  out18.innerHTML = '';
+
+  fetch(URL + '/api/26/gow/rune', {
+
+    method: 'POST',
+
+    headers: {
+      'apikey': APIKEY,
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+
+  })
+    .then((response) => {
+      console.log(response.status);
+      return response.json();
+    })
+    .then((data) => {
+
+      console.log(data);
+
+      for (let key in data.rune) {
+
+        let newImg = document.createElement('img');
+        newImg.setAttribute("alt", key);
+        newImg.src = URL + data.rune[key];
+        out18.appendChild(newImg);
+
+      }
+
+    });
+
 
 }
 
