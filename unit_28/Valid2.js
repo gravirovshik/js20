@@ -6,10 +6,10 @@ class Valid2 extends Valid {
     }
 
     validate() {
+        
         this.error_message = '';
         super.validate();
-        console.log(super.validate());
-        console.log(this.isValid);
+
         if (this.isValid == false) {
             this.error_message = 'password error';
             return this.isValid;
