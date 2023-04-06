@@ -298,6 +298,8 @@ const out8 = document.querySelector('.out-8');
 
 function f8() {
 
+    out8.innerHTML = '';
+
     let s81 = document.querySelector('.s-81');
     let s82 = document.querySelector('.s-82');
 
@@ -323,6 +325,12 @@ function f8() {
 
     Promise.all([promise_1, promise_2]).then(data => {
         console.log(data);
+        const img1 = document.createElement('img');
+        img1.src = URL + data[0].result.image;
+        const img2 = document.createElement('img');
+        img2.src = URL + data[1].result.image;
+        out8.appendChild(img1);
+        out8.appendChild(img2);
 
     })
 
