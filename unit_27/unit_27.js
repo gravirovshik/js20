@@ -14,15 +14,15 @@ function f1() {
     const requestHeaders = new Headers();
     requestHeaders.append("apikey", APIKEY);
 
-    const p = new Promise((resolve, reject) =>  {
-        fetch(URL +'/api/27/random/random-number', { 
+    const p = new Promise((resolve, reject) => {
+        fetch(URL + '/api/27/random/random-number', {
             headers: requestHeaders
         })
-        .then(response => {
-            if (response.ok) resolve(response.json());
-            else reject(response)
-        })
-        .catch(error => reject(error));
+            .then(response => {
+                if (response.ok) resolve(response.json());
+                else reject(response)
+            })
+            .catch(error => reject(error));
     });
 
     p.then(resolveF1, rejectError);
@@ -35,7 +35,10 @@ function rejectError(err) {
 
 function resolveF1(data) {
     console.log(data);
-    // тут допишите необходимый вывод 
+    console.log(data["random-number"]);
+    if (data["random-number"] > 50) {
+        document.querySelector('.out-1').innerHTML = "true";
+    } else document.querySelector('.out-1').innerHTML = "false";
 }
 
 document.querySelector('.b-1').addEventListener('click', f1);
@@ -50,11 +53,28 @@ document.querySelector('.b-1').addEventListener('click', f1);
 
 
 function f2() {
-  
+
+    const requestHeaders = new Headers();
+    requestHeaders.append("apikey", APIKEY);
+
+    const p = new Promise((resolve, reject) => {
+        fetch(URL + '/api/27/random/random-string', {
+            headers: requestHeaders
+        })
+            .then(response => {
+                if (response.ok) resolve(response.json());
+                else reject(response)
+            })
+            .catch(error => reject(error));
+    });
+
+    p.then(resolveF2, rejectError);
+
 }
 
 function resolveF2(data) {
     console.log(data);
+    document.querySelector('.out-2').innerHTML = data["random-string"];
 }
 
 document.querySelector('.b-2').onclick = f2;
@@ -71,7 +91,7 @@ document.querySelector('.b-2').onclick = f2;
 
 let emloyeerId;
 
-function f3(){
+function f3() {
     const requestHeaders = new Headers();
     requestHeaders.append("apikey", APIKEY);
 
@@ -82,21 +102,21 @@ function f3(){
         .then(data => {
             console.log(data);
             emloyeerId = data['random-number'];
-            return  fetch(URL + '/api/27/employee/read/' + emloyeerId, {
+            return fetch(URL + '/api/27/employee/read/' + emloyeerId, {
                 headers: requestHeaders
             });
-         })
-         .then(response => response.json())
-         .then(data => {
+        })
+        .then(response => response.json())
+        .then(data => {
             console.log(data);
-            // допишите вывод
-         });
+            document.querySelector('.out-3').innerHTML = data.result.email;
+        });
 }
 
 document.querySelector('.b-3').onclick = f3;
 
 
-// Task 4. 
+// Task 4.
 // При нажатии кнопки .b-4 срабатывает функция f4. Функция:
 // с помощью fetch отсылает GET запрос на /api/27/employee/random-email
 // полученный результат - случайное число присвойте в переменную employeeEmail.
@@ -106,13 +126,30 @@ document.querySelector('.b-3').onclick = f3;
 
 let employeeEmail;
 
-function f4(){
+function f4() {
+    const requestHeaders = new Headers();
+    requestHeaders.append("apikey", APIKEY);
+
+    fetch(URL + '/api/27/employee/random-email', {
+        headers: requestHeaders
+    })
+        .then(response => response.json())
+        .then(data => {
+            employeeEmail = data.email;
+            return fetch(URL + '/api/27/employee/email?email=' + employeeEmail, {
+                headers: requestHeaders
+            });
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector('.out-4').innerHTML = data.result.name;
+        });
 
 }
 
 document.querySelector('.b-4').onclick = f4;
 
-// Task 5. 
+// Task 5.
 // При нажатии кнопки .b-5 срабатывает функция f5. Функция:
 // с помощью fetch отсылает POST запрос на /api/27/gow/random-world
 // полученный результат - случайный мир присваивает в переменную randomWorld.
@@ -122,7 +159,25 @@ document.querySelector('.b-4').onclick = f4;
 
 let randomWorld;
 
-function f5(){
+function f5() {
+    const requestHeaders = new Headers();
+    requestHeaders.append("apikey", APIKEY);
+
+    fetch(URL + '/api/27/gow/random-world', {
+        method: "POST",
+        headers: requestHeaders
+    })
+        .then(response => response.json())
+        .then(data => {
+            randomWorld = data.world;
+            return fetch(URL + '/api/27/gow/world/' + randomWorld, {
+                headers: requestHeaders
+            });
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector('.out-5').innerHTML = data.world.governor;
+        });
 
 }
 
@@ -131,7 +186,7 @@ document.querySelector('.b-5').onclick = f5;
 
 // Task 6.
 // При нажатии кнопки .b-6 срабатывает функция f6. Функция :
-// создает два промиса, первый посылает запрос на 
+// создает два промиса, первый посылает запрос на
 // /api/27/random/random-number метод POST
 // в теле body POST запроса (form-data) передает значения min которое равно min_1 и max которое равно переменной max_1
 // Второй промис на /api/27/random/random-number метод POST
@@ -146,7 +201,7 @@ let max_1 = 20;
 let min_2 = 100;
 let max_2 = 120;
 
-function f6(){
+function f6() {
 
     const requestHeaders = new Headers();
     requestHeaders.append("apikey", APIKEY);
@@ -164,22 +219,22 @@ function f6(){
         fetch(URL + '/api/27/random/random-number', {
             method: "POST",
             headers: requestHeaders,
-            body : formData1
+            body: formData1
         }).then(data => resolve(data.json()));
-    
+
     });
-    
+
     const promise_2 = new Promise((resolve) => {
         fetch(URL + '/api/27/random/random-number', {
             method: "POST",
             headers: requestHeaders,
-            body : formData2
+            body: formData2
         }).then(data => resolve(data.json()));
     });
 
-    Promise.all([promise_1, promise_2 ]).then( data => {
-       // выведите в консоль и посмотрите что лежит в data
-       // выведите сумму полученных случайных чисел
+    Promise.all([promise_1, promise_2]).then(data => {
+        console.log(data);
+        document.querySelector('.out-6').innerHTML = data[0]['random-number'] + data[1]['random-number'];
     })
 }
 
@@ -187,7 +242,7 @@ document.querySelector('.b-6').onclick = f6;
 
 // Task 7.
 // При нажатии кнопки .b-7 срабатывает функция f7. Функция :
-// создает два промиса, первый посылает запрос на 
+// создает два промиса, первый посылает запрос на
 // /api/27/random/random-number
 // метод GET
 // Второй promise отправляет GET запрос на /api/27/random/random-string
@@ -196,27 +251,82 @@ document.querySelector('.b-6').onclick = f6;
 // В out-72 выводится полученная случайна строка
 
 
-function f7(){
-   
+function f7() {
+    const requestHeaders = new Headers();
+    requestHeaders.append("apikey", APIKEY);
+
+    const promise_1 = new Promise((resolve) => {
+        fetch(URL + '/api/27/random/random-number', {
+
+            headers: requestHeaders
+
+        }).then(data => resolve(data.json()));
+
+    });
+
+    const promise_2 = new Promise((resolve) => {
+        fetch(URL + '/api/27/random/random-string', {
+
+            headers: requestHeaders
+
+        }).then(data => resolve(data.json()));
+    });
+
+    Promise.all([promise_1, promise_2]).then(data => {
+        console.log(data);
+        document.querySelector('.out-71').innerHTML = data[0]['random-number'];
+        document.querySelector('.out-72').innerHTML = data[1]['random-string'];
+    })
+
 }
 
 document.querySelector('.b-7').onclick = f7;
 
 // Task 8.
 // При нажатии кнопки .b-8 срабатывает функция f8. Функция :
-// создает два промиса, первый посылает запрос на 
+// создает два промиса, первый посылает запрос на
 // /api/27/sr/read/название_расы
 // где название_расы получает из select s-81
 // метод GET
 // Второй promise отправляет GET запрос на /api/27/sr/read?race=название_расы2
 // где название_расы получает из select s-82
 // Затем результаты получаются через PromiseAll и в .out-8 выводится image полученных рас. Image создаются через createElement, в начале функции .out-8 очищается.
-// Промисы создаются и разрешаются в том порядке что описаны. 
+// Промисы создаются и разрешаются в том порядке что описаны.
 
 const out8 = document.querySelector('.out-8');
 
 
-function f8(){
+function f8() {
+
+    let s81 = document.querySelector('.s-81');
+    let s82 = document.querySelector('.s-82');
+
+    const requestHeaders = new Headers();
+    requestHeaders.append("apikey", APIKEY);
+
+    const promise_1 = new Promise((resolve) => {
+        fetch(URL + '/api/27/sr/read/' + s81.value, {
+
+            headers: requestHeaders
+
+        }).then(data => resolve(data.json()));
+
+    });
+
+    const promise_2 = new Promise((resolve) => {
+        fetch(URL + '/api/27/sr/read?race=' + s82.value, {
+
+            headers: requestHeaders
+
+        }).then(data => resolve(data.json()));
+    });
+
+    Promise.all([promise_1, promise_2]).then(data => {
+        console.log(data);
+
+    })
+
+
 
 }
 
